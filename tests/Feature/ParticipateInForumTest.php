@@ -35,7 +35,7 @@ class ParticipateInForumTest extends TestCase
 
 //        $this->expectException('Illuminate\Auth\AuthenticationException');
 
-        $this->post('/threads/1/replies', []);
+        $this->post('/threads/channel/1/replies', [])->assertRedirect('/login');
 
     }
 }

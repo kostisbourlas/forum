@@ -25,11 +25,11 @@ class CreateThreadsTest extends TestCase
 
         $thread = make('App\Thread');
 
-        $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray());
 
-        $respose = $this->get($thread->path());
-
-        $respose->assertSee($thread->title)->assertSee($thread->body);
+        $this->get($response->headers->get('Location'))
+            ->assertSee($thread->title)
+            ->assertSee($thread->body);
     }
 
     /** @test */
