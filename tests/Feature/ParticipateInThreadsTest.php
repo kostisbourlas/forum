@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ParticipateInForumTest extends TestCase
+class ParticipateInThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -36,6 +36,17 @@ class ParticipateInForumTest extends TestCase
 //        $this->expectException('Illuminate\Auth\AuthenticationException');
 
         $this->post('/threads/channel/1/replies', [])->assertRedirect('/login');
+    }
 
+    /** @test */
+    function a_reply_requires_a_body() {
+
+        $this->signIn();
+
+        $thread = create('App\Thread');
+        $reply = make('App\Reply', ['body' => null]);
+
+        $this->post($thread->path() . '/replies/', $reply->toArray())
+            ->assertSessionHasErrors('body');
     }
 }
